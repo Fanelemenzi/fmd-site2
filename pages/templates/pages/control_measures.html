@@ -1,0 +1,234 @@
+{% extends 'base.html' %}
+
+{% block title %}Control Measures - FMD Watch Eswatini{% endblock %}
+
+{% block content %}
+<div class="bg-gray-100 py-8">
+    <div class="container mx-auto px-4">
+        <h1 class="text-4xl font-bold text-gray-800">FMD Control Measures</h1>
+        <p class="text-gray-600 mt-2">Guidelines for farmers and livestock owners</p>
+    </div>
+</div>
+
+<div class="container mx-auto px-4 py-12">
+    <div class="max-w-4xl mx-auto">
+        <!-- Emergency Alert -->
+        <div class="bg-red-50 border-l-4 border-red-500 p-6 rounded-lg mb-8">
+            <div class="flex items-start">
+                <svg class="w-6 h-6 text-red-500 mr-3 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                </svg>
+                <div>
+                    <h3 class="text-lg font-bold text-red-900 mb-2">If You Suspect FMD</h3>
+                    <p class="text-red-800 mb-3">
+                        Immediate action is critical. Do not wait to see if symptoms worsen.
+                    </p>
+                    <div class="bg-white rounded-lg p-4">
+                        <p class="font-bold text-red-900 mb-2">Contact Immediately:</p>
+                        <p class="text-red-800">Veterinary Services: <strong>+268 2404 2731</strong></p>
+                        <p class="text-red-800">Emergency Hotline: <strong>+268 7600 0000</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Prevention Measures -->
+        <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">Prevention Measures</h2>
+            
+            <div class="space-y-6">
+                <div class="border-l-4 border-emerald-500 pl-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">1. Biosecurity on Your Farm</h3>
+                    <ul class="list-disc list-inside text-gray-700 space-y-2">
+                        <li>Control and record all visitors to your farm</li>
+                        <li>Provide disinfectant footbaths at farm entrances</li>
+                        <li>Clean and disinfect all vehicles entering the farm</li>
+                        <li>Maintain separate equipment for different animal groups</li>
+                        <li>Keep wild animals away from domestic livestock</li>
+                        <li>Store feed in protected areas to prevent contamination</li>
+                    </ul>
+                </div>
+
+                <div class="border-l-4 border-emerald-500 pl-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">2. Animal Movement Control</h3>
+                    <ul class="list-disc list-inside text-gray-700 space-y-2">
+                        <li>Minimize livestock movements during outbreak periods</li>
+                        <li>Always obtain proper movement permits when required</li>
+                        <li>Quarantine all new animals for at least 21 days</li>
+                        <li>Keep detailed records of all animal movements</li>
+                        <li>Avoid communal grazing areas during outbreaks</li>
+                        <li>Do not mix animals from different farms</li>
+                    </ul>
+                </div>
+
+                <div class="border-l-4 border-emerald-500 pl-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">3. Vaccination Programs</h3>
+                    <ul class="list-disc list-inside text-gray-700 space-y-2">
+                        <li>Follow government vaccination schedules strictly</li>
+                        <li>Ensure all eligible animals are vaccinated</li>
+                        <li>Keep vaccination records up to date</li>
+                        <li>Report any adverse reactions to veterinary services</li>
+                        <li>Participate in national vaccination campaigns</li>
+                    </ul>
+                </div>
+
+                <div class="border-l-4 border-emerald-500 pl-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">4. Early Detection</h3>
+                    <ul class="list-disc list-inside text-gray-700 space-y-2">
+                        <li>Inspect animals daily for any signs of illness</li>
+                        <li>Know the symptoms of FMD (see signs below)</li>
+                        <li>Report any unusual symptoms immediately</li>
+                        <li>Monitor body temperature regularly</li>
+                        <li>Watch for sudden drops in milk production</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recognizing FMD -->
+        <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">Recognizing FMD Signs</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-red-50 rounded-lg p-6">
+                    <h3 class="font-bold text-lg text-red-900 mb-3">Early Warning Signs</h3>
+                    <ul class="space-y-2 text-gray-700">
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-red-500 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                            <span>High fever (39-41°C)</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-red-500 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                            <span>Loss of appetite</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-red-500 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                            <span>Excessive drooling</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-red-500 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                            <span>Smacking lips</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-red-500 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                            <span>Shivering</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="bg-amber-50 rounded-lg p-6">
+                    <h3 class="font-bold text-lg text-amber-900 mb-3">Advanced Symptoms</h3>
+                    <ul class="space-y-2 text-gray-700">
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-amber-500 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                            <span>Blisters on tongue and mouth</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-amber-500 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                            <span>Lesions on hooves and teats</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-amber-500 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                            <span>Severe lameness</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-amber-500 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                            <span>Drop in milk production</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-amber-500 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                            <span>Weight loss</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- What to Do During an Outbreak -->
+        <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">If FMD is Confirmed on Your Farm</h2>
+            
+            <div class="space-y-4">
+                <div class="flex items-start bg-gray-50 rounded-lg p-4">
+                    <div class="bg-emerald-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold mr-4 flex-shrink-0">1</div>
+                    <div>
+                        <h3 class="font-bold text-gray-800 mb-1">Isolate Affected Animals</h3>
+                        <p class="text-gray-700">Separate sick animals from healthy ones immediately. Keep different age groups apart.</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start bg-gray-50 rounded-lg p-4">
+                    <div class="bg-emerald-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold mr-4 flex-shrink-0">2</div>
+                    <div>
+                        <h3 class="font-bold text-gray-800 mb-1">Stop All Movements</h3>
+                        <p class="text-gray-700">Do not move any animals, vehicles, or equipment on or off your farm without permission.</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start bg-gray-50 rounded-lg p-4">
+                    <div class="bg-emerald-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold mr-4 flex-shrink-0">3</div>
+                    <div>
+                        <h3 class="font-bold text-gray-800 mb-1">Cooperate with Authorities</h3>
+                        <p class="text-gray-700">Follow all instructions from veterinary officials. Provide accurate information and full access.</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start bg-gray-50 rounded-lg p-4">
+                    <div class="bg-emerald-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold mr-4 flex-shrink-0">4</div>
+                    <div>
+                        <h3 class="font-bold text-gray-800 mb-1">Enhanced Biosecurity</h3>
+                        <p class="text-gray-700">Implement strict cleaning and disinfection protocols. Use approved disinfectants for FMD control.</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start bg-gray-50 rounded-lg p-4">
+                    <div class="bg-emerald-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold mr-4 flex-shrink-0">5</div>
+                    <div>
+                        <h3 class="font-bold text-gray-800 mb-1">Support Treatment</h3>
+                        <p class="text-gray-700">Provide supportive care as directed: soft food, water, shelter. Do not use unprescribed treatments.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resources -->
+        <div class="bg-emerald-50 rounded-lg border-2 border-emerald-500 p-8">
+            <h2 class="text-2xl font-bold text-emerald-900 mb-4">Need More Information?</h2>
+            <p class="text-gray-700 mb-6">
+                For detailed guidelines, training materials, and support:
+            </p>
+            <div class="space-y-3">
+                <p class="text-gray-700">
+                    <strong>Ministry of Agriculture Veterinary Services</strong><br>
+                    Phone: +268 2404 2731<br>
+                    Email: vet@gov.sz
+                </p>
+                <p class="text-gray-700">
+                    <strong>24/7 Emergency Hotline</strong><br>
+                    Phone: +268 7600 0000
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

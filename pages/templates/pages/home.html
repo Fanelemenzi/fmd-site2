@@ -1,0 +1,747 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - FMD Watch Eswatini{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="bg-gradient-to-r from-emerald-600 to-teal-600 text-white py-16">
+    <div class="container mx-auto px-4">
+        <div class="max-w-3xl">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">
+                Foot and Mouth Disease Monitoring
+            </h1>
+            <p class="text-xl text-emerald-50 mb-6">
+                Real-time tracking of FMD outbreaks across Eswatini. Stay informed, stay protected.
+            </p>
+            <div class="flex flex-wrap gap-4">
+                <a href="#map"
+                    class="bg-white text-emerald-700 px-6 py-3 rounded-lg font-semibold hover:bg-emerald-50 transition">
+                    View Map
+                </a>
+                <a href="{% url 'control_measures' %}"
+                    class="border-2 border-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-emerald-700 transition">
+                    Prevention Guidelines
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Statistics Cards -->
+<div class="container mx-auto px-4 -mt-8">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <!-- Active Outbreaks -->
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-gray-600 text-sm">Active Outbreaks</p>
+                    <p class="text-3xl font-bold text-red-600">{{ active_outbreaks }}</p>
+                </div>
+                <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+                    <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z">
+                        </path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Surveillance Zones -->
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-gray-600 text-sm">Surveillance Zones</p>
+                    <p class="text-3xl font-bold text-amber-600">{{ surveillance_zones }}</p>
+                </div>
+                <div class="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center">
+                    <svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
+                        </path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cleared Areas -->
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-gray-600 text-sm">Cleared Areas</p>
+                    <p class="text-3xl font-bold text-green-600">{{ cleared_outbreaks }}</p>
+                </div>
+                <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                    <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Animals Affected -->
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-gray-600 text-sm">Animals Affected</p>
+                    <p class="text-3xl font-bold text-gray-800">{{ total_animals_affected }}</p>
+                </div>
+                <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
+                    <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Map Section -->
+<div id="map" class="container mx-auto px-4 mt-12">
+    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+        <div class="p-6 bg-gray-50 border-b">
+            <h2 class="text-2xl font-bold text-gray-800">Outbreak Map</h2>
+            <p class="text-gray-600 mt-1">Interactive map showing FMD outbreak locations across Eswatini</p>
+        </div>
+
+        <!-- Map Controls -->
+        <div class="p-4 bg-white border-b" x-data="mapFilters()">
+            <div class="flex flex-wrap gap-4">
+                <div>
+                    <label class="text-sm font-medium text-gray-700 block mb-1">Status Filter</label>
+                    <select x-model="statusFilter" @change="updateMap()" class="border rounded-lg px-3 py-2">
+                        <option value="all">All Status</option>
+                        <option value="active">Active Only</option>
+                        <option value="surveillance">Surveillance Only</option>
+                        <option value="cleared">Cleared Only</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="text-sm font-medium text-gray-700 block mb-1">Region Filter</label>
+                    <select x-model="regionFilter" @change="updateMap()" class="border rounded-lg px-3 py-2">
+                        <option value="all">All Regions</option>
+                        <option value="hhohho">Hhohho</option>
+                        <option value="manzini">Manzini</option>
+                        <option value="lubombo">Lubombo</option>
+                        <option value="shiselweni">Shiselweni</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="text-sm font-medium text-gray-700 block mb-1">Show Dip Tank Areas</label>
+                    <select x-model="showDipTanks" @change="updateMap()" class="border rounded-lg px-3 py-2">
+                        <option value="all">All Dip Tanks</option>
+                        <option value="affected">Affected Only</option>
+                        <option value="clear">Clear Only</option>
+                        <option value="none">Hide Dip Tanks</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="text-sm font-medium text-gray-700 block mb-1">Show Cordon Lines</label>
+                    <select x-model="showCordonLines" @change="updateMap()" class="border rounded-lg px-3 py-2">
+                        <option value="all">All Cordon Lines</option>
+                        <option value="active">Active Only</option>
+                        <option value="none">Hide Cordon Lines</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="text-sm font-medium text-gray-700 block mb-1">Show Foot Wash Stations</label>
+                    <select x-model="showFootWashStations" @change="updateMap()" class="border rounded-lg px-3 py-2">
+                        <option value="all">All Stations</option>
+                        <option value="operational">Operational Only</option>
+                        <option value="none">Hide Stations</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Drawing Tools -->
+            <div class="mt-4 pt-4 border-t">
+                <div class="flex flex-wrap gap-4 items-center">
+                    <h4 class="text-sm font-semibold text-gray-800">Drawing Tools:</h4>
+                    <button id="draw-cordon-line" class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 transition">
+                        Draw Cordon Line
+                    </button>
+                    <button id="clear-drawing" class="bg-gray-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-gray-700 transition">
+                        Clear Drawing
+                    </button>
+                    <span id="drawing-status" class="text-sm text-gray-600"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Map Container -->
+        <div id="outbreak-map" class="map-container"></div>
+
+        <!-- Legend -->
+        <div class="p-4 bg-gray-50 border-t">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                    <h4 class="text-sm font-semibold text-gray-800 mb-2">Outbreak Status</h4>
+                    <div class="flex flex-wrap gap-4">
+                        <div class="flex items-center">
+                            <div class="w-4 h-4 bg-red-500 rounded-full mr-2"></div>
+                            <span class="text-sm text-gray-700">Active Outbreak</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-4 h-4 bg-amber-500 rounded-full mr-2"></div>
+                            <span class="text-sm text-gray-700">Under Surveillance</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-4 h-4 bg-green-500 rounded-full mr-2"></div>
+                            <span class="text-sm text-gray-700">Cleared/Controlled</span>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-sm font-semibold text-gray-800 mb-2">Dip Tank Areas (5km radius)</h4>
+                    <div class="flex flex-wrap gap-4">
+                        <div class="flex items-center">
+                            <div class="w-4 h-4 border-2 border-red-500 rounded-full mr-2" style="background-color: rgba(239, 68, 68, 0.2);"></div>
+                            <span class="text-sm text-gray-700">Affected Area</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-4 h-4 border-2 border-green-500 rounded-full mr-2" style="background-color: rgba(34, 197, 94, 0.1);"></div>
+                            <span class="text-sm text-gray-700">Clear Area</span>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-sm font-semibold text-gray-800 mb-2">Control Measures</h4>
+                    <div class="flex flex-wrap gap-4">
+                        <div class="flex items-center">
+                            <div class="w-4 h-1 bg-blue-600 mr-2"></div>
+                            <span class="text-sm text-gray-700">Cordon Lines</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-4 h-4 bg-purple-600 rounded mr-2"></div>
+                            <span class="text-sm text-gray-700">Foot Wash Stations</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Featured Updates -->
+{% if featured_updates %}
+<div class="container mx-auto px-4 mt-12">
+    <h2 class="text-3xl font-bold text-gray-800 mb-6">Latest Updates</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {% for update in featured_updates %}
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition">
+            {% if update.image %}
+            <img src="{{ update.image.url }}" alt="{{ update.title }}" class="w-full h-48 object-cover">
+            {% else %}
+            <div class="w-full h-48 bg-gradient-to-br from-emerald-400 to-teal-500"></div>
+            {% endif %}
+            <div class="p-6">
+                <div class="flex items-center text-sm text-gray-600 mb-2">
+                    <span class="bg-emerald-100 text-emerald-700 px-2 py-1 rounded text-xs font-medium">
+                        {{ update.get_update_type_display }}
+                    </span>
+                    <span class="ml-2">{{ update.published_at|date:"M d, Y" }}</span>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">{{ update.title }}</h3>
+                <p class="text-gray-600 mb-4">{{ update.content|truncatewords:20 }}</p>
+                <p class="text-sm text-gray-500">Source: {{ update.source }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="text-center mt-8">
+        <a href="{% url 'updates' %}"
+            class="inline-block bg-emerald-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-emerald-700 transition">
+            View All Updates
+        </a>
+    </div>
+</div>
+{% endif %}
+
+<!-- Important Notice -->
+<div class="container mx-auto px-4 mt-12">
+    <div class="bg-amber-50 border-l-4 border-amber-500 p-6 rounded-lg">
+        <div class="flex items-start">
+            <svg class="w-6 h-6 text-amber-500 mr-3 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z">
+                </path>
+            </svg>
+            <div>
+                <h3 class="text-lg font-bold text-amber-900 mb-2">Important Notice</h3>
+                <p class="text-amber-800">
+                    If you suspect an FMD outbreak on your farm or in your area, immediately contact the
+                    Veterinary Services Department at +268 2404 2731 or the emergency hotline at +268 7600 0000.
+                    Early reporting is crucial for effective disease control.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    // Alpine.js component for map filters
+    function mapFilters() {
+        return {
+            statusFilter: 'all',
+            regionFilter: 'all',
+            showDipTanks: 'all',
+            showCordonLines: 'all',
+            showFootWashStations: 'all',
+            updateMap() {
+                // Reload map with filters
+                loadOutbreakMap(this.statusFilter, this.regionFilter, this.showDipTanks, this.showCordonLines, this.showFootWashStations);
+            }
+        }
+    }
+
+    // Leaflet map initialization
+    let map;
+    let outbreakLayer;
+    let dipTankLayer;
+    let cordonLineLayer;
+    let footWashStationLayer;
+    let drawingLayer;
+    let isDrawing = false;
+    let currentDrawnLine = [];
+
+    function loadOutbreakMap(statusFilter = 'all', regionFilter = 'all', showDipTanks = 'all', showCordonLines = 'all', showFootWashStations = 'all') {
+        // Build API URLs with filters
+        let apiUrl = '/api/outbreaks/geojson/';
+        let dipTankUrl = '/api/diptanks/geojson/';
+        let cordonLineUrl = '/api/cordonlines/geojson/';
+        let footWashStationUrl = '/api/footwashstations/geojson/';
+        
+        const params = [];
+        if (statusFilter !== 'all') params.push(`status=${statusFilter}`);
+        if (regionFilter !== 'all') params.push(`region=${regionFilter}`);
+        if (params.length > 0) apiUrl += '?' + params.join('&');
+
+        const dipTankParams = [];
+        if (regionFilter !== 'all') dipTankParams.push(`region=${regionFilter}`);
+        if (showDipTanks === 'affected') dipTankParams.push(`affected=true`);
+        else if (showDipTanks === 'clear') dipTankParams.push(`affected=false`);
+        if (dipTankParams.length > 0) dipTankUrl += '?' + dipTankParams.join('&');
+
+        const cordonLineParams = [];
+        if (regionFilter !== 'all') cordonLineParams.push(`region=${regionFilter}`);
+        if (showCordonLines === 'active') cordonLineParams.push(`status=active`);
+        if (cordonLineParams.length > 0) cordonLineUrl += '?' + cordonLineParams.join('&');
+
+        const footWashParams = [];
+        if (regionFilter !== 'all') footWashParams.push(`region=${regionFilter}`);
+        if (showFootWashStations === 'operational') footWashParams.push(`operational=true`);
+        if (footWashParams.length > 0) footWashStationUrl += '?' + footWashParams.join('&');
+
+        // Fetch all data
+        const promises = [
+            fetch(apiUrl).then(response => response.json()),
+            showDipTanks !== 'none' ? fetch(dipTankUrl).then(response => response.json()) : Promise.resolve({features: []}),
+            showCordonLines !== 'none' ? fetch(cordonLineUrl).then(response => response.json()) : Promise.resolve({features: []}),
+            showFootWashStations !== 'none' ? fetch(footWashStationUrl).then(response => response.json()) : Promise.resolve({features: []})
+        ];
+
+        Promise.all(promises)
+            .then(([outbreakData, dipTankData, cordonLineData, footWashStationData]) => {
+                if (!map) {
+                    // Initialize map centered on Eswatini
+                    map = L.map('outbreak-map').setView([-26.5225, 31.4659], 8);
+
+                    // Add OpenStreetMap tiles
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                        maxZoom: 18
+                    }).addTo(map);
+
+                    // Initialize drawing layer
+                    drawingLayer = L.layerGroup().addTo(map);
+
+                    // Set up drawing controls
+                    setupDrawingControls();
+
+                    addOutbreakLayer(outbreakData);
+                    addDipTankLayer(dipTankData);
+                    addCordonLineLayer(cordonLineData);
+                    addFootWashStationLayer(footWashStationData);
+                } else {
+                    // Update existing map
+                    clearLayers();
+                    addOutbreakLayer(outbreakData);
+                    if (showDipTanks !== 'none') addDipTankLayer(dipTankData);
+                    if (showCordonLines !== 'none') addCordonLineLayer(cordonLineData);
+                    if (showFootWashStations !== 'none') addFootWashStationLayer(footWashStationData);
+                }
+            })
+            .catch(error => {
+                console.error('Error loading map data:', error);
+            });
+    }
+
+    function clearLayers() {
+        if (outbreakLayer) map.removeLayer(outbreakLayer);
+        if (dipTankLayer) map.removeLayer(dipTankLayer);
+        if (cordonLineLayer) map.removeLayer(cordonLineLayer);
+        if (footWashStationLayer) map.removeLayer(footWashStationLayer);
+    }
+
+    function setupDrawingControls() {
+        const drawButton = document.getElementById('draw-cordon-line');
+        const clearButton = document.getElementById('clear-drawing');
+        const statusSpan = document.getElementById('drawing-status');
+
+        drawButton.addEventListener('click', () => {
+            if (!isDrawing) {
+                startDrawing();
+                drawButton.textContent = 'Finish Drawing';
+                drawButton.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+                drawButton.classList.add('bg-green-600', 'hover:bg-green-700');
+                statusSpan.textContent = 'Click on map to draw cordon line points. Click "Finish Drawing" when done.';
+            } else {
+                finishDrawing();
+                drawButton.textContent = 'Draw Cordon Line';
+                drawButton.classList.remove('bg-green-600', 'hover:bg-green-700');
+                drawButton.classList.add('bg-blue-600', 'hover:bg-blue-700');
+                statusSpan.textContent = '';
+            }
+        });
+
+        clearButton.addEventListener('click', () => {
+            clearDrawing();
+            statusSpan.textContent = 'Drawing cleared.';
+            setTimeout(() => statusSpan.textContent = '', 3000);
+        });
+    }
+
+    function startDrawing() {
+        isDrawing = true;
+        currentDrawnLine = [];
+        map.getContainer().style.cursor = 'crosshair';
+        
+        map.on('click', onMapClick);
+    }
+
+    function finishDrawing() {
+        isDrawing = false;
+        map.getContainer().style.cursor = '';
+        map.off('click', onMapClick);
+        
+        if (currentDrawnLine.length > 1) {
+            // Show save dialog or automatically save
+            const name = prompt('Enter a name for this cordon line:');
+            if (name) {
+                saveCordonLine(name, currentDrawnLine);
+            }
+        }
+    }
+
+    function onMapClick(e) {
+        if (!isDrawing) return;
+        
+        const point = {lat: e.latlng.lat, lng: e.latlng.lng};
+        currentDrawnLine.push(point);
+        
+        // Add visual feedback
+        L.circleMarker([point.lat, point.lng], {
+            radius: 4,
+            fillColor: '#3b82f6',
+            color: '#ffffff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 1
+        }).addTo(drawingLayer);
+        
+        // Draw line segments
+        if (currentDrawnLine.length > 1) {
+            const lastTwo = currentDrawnLine.slice(-2);
+            L.polyline([[lastTwo[0].lat, lastTwo[0].lng], [lastTwo[1].lat, lastTwo[1].lng]], {
+                color: '#3b82f6',
+                weight: 3,
+                opacity: 0.8
+            }).addTo(drawingLayer);
+        }
+    }
+
+    function clearDrawing() {
+        drawingLayer.clearLayers();
+        currentDrawnLine = [];
+        if (isDrawing) {
+            isDrawing = false;
+            map.getContainer().style.cursor = '';
+            map.off('click', onMapClick);
+            document.getElementById('draw-cordon-line').textContent = 'Draw Cordon Line';
+            document.getElementById('draw-cordon-line').classList.remove('bg-green-600', 'hover:bg-green-700');
+            document.getElementById('draw-cordon-line').classList.add('bg-blue-600', 'hover:bg-blue-700');
+        }
+    }
+
+    function saveCordonLine(name, coordinates) {
+        // In a real implementation, you would send this to your backend
+        console.log('Saving cordon line:', {
+            name: name,
+            coordinates: coordinates
+        });
+        
+        // For now, just show an alert
+        alert(`Cordon line "${name}" would be saved with ${coordinates.length} points. In a full implementation, this would be sent to the server.`);
+        
+        // Clear the drawing
+        clearDrawing();
+    }
+
+    function addOutbreakLayer(geojsonData) {
+        // Create layer group for outbreaks
+        outbreakLayer = L.layerGroup().addTo(map);
+
+        // Process each feature in the GeoJSON
+        geojsonData.features.forEach(feature => {
+            const coords = feature.geometry.coordinates;
+            const props = feature.properties;
+
+            // Determine marker color based on status
+            let markerColor;
+            switch (props.status) {
+                case 'active':
+                    markerColor = '#ef4444';
+                    break;
+                case 'surveillance':
+                    markerColor = '#f59e0b';
+                    break;
+                case 'cleared':
+                    markerColor = '#10b981';
+                    break;
+                default:
+                    markerColor = '#6b7280';
+            }
+
+            // Create custom marker
+            const marker = L.circleMarker([coords[1], coords[0]], {
+                radius: 8,
+                fillColor: markerColor,
+                color: '#ffffff',
+                weight: 2,
+                opacity: 1,
+                fillOpacity: 0.8
+            });
+
+            // Create popup content
+            const popupContent = `
+                <div class="p-2">
+                    <h3 class="font-bold text-lg mb-2">${props.title}</h3>
+                    <p class="text-sm mb-1"><strong>Status:</strong> ${props.status_display}</p>
+                    <p class="text-sm mb-1"><strong>Region:</strong> ${props.region_display}</p>
+                    <p class="text-sm mb-1"><strong>Location:</strong> ${props.location_name}</p>
+                    <p class="text-sm mb-1"><strong>Animals Affected:</strong> ${props.animals_affected}</p>
+                    <p class="text-sm text-gray-600 mt-2">${props.description}</p>
+                </div>
+            `;
+
+            marker.bindPopup(popupContent);
+            marker.addTo(outbreakLayer);
+        });
+    }
+    
+    function addDipTankLayer(geojsonData) {
+        // Create layer group for dip tanks
+        dipTankLayer = L.layerGroup().addTo(map);
+        
+        // Process each dip tank feature in the GeoJSON
+        geojsonData.features.forEach(feature => {
+            const coords = feature.geometry.coordinates;
+            const props = feature.properties;
+            
+            // Determine circle color and opacity based on affected status
+            let circleColor, fillColor, fillOpacity;
+            if (props.is_affected) {
+                circleColor = '#ef4444';  // Red border
+                fillColor = '#ef4444';    // Red fill
+                fillOpacity = 0.2;        // Semi-transparent
+            } else {
+                circleColor = '#22c55e';  // Green border
+                fillColor = '#22c55e';    // Green fill
+                fillOpacity = 0.1;        // More transparent
+            }
+            
+            // Create 5km radius circle
+            const circle = L.circle([coords[1], coords[0]], {
+                radius: props.radius, // 5000 meters
+                color: circleColor,
+                weight: 2,
+                opacity: 0.8,
+                fillColor: fillColor,
+                fillOpacity: fillOpacity
+            });
+            
+            // Create center marker for the dip tank
+            const marker = L.circleMarker([coords[1], coords[0]], {
+                radius: 6,
+                fillColor: circleColor,
+                color: '#ffffff',
+                weight: 2,
+                opacity: 1,
+                fillOpacity: 1
+            });
+            
+            // Create popup content for dip tank
+            const popupContent = `
+                <div class="p-2">
+                    <h3 class="font-bold text-lg mb-2">${props.name}</h3>
+                    <p class="text-sm mb-1"><strong>Region:</strong> ${props.region_display}</p>
+                    <p class="text-sm mb-1"><strong>Status:</strong> ${props.is_affected ? 'Affected Area' : 'Clear Area'}</p>
+                    <p class="text-sm mb-1"><strong>Coverage:</strong> 5km radius</p>
+                    ${props.capacity ? `<p class="text-sm mb-1"><strong>Capacity:</strong> ${props.capacity} animals</p>` : ''}
+                    ${props.last_inspection ? `<p class="text-sm mb-1"><strong>Last Inspection:</strong> ${new Date(props.last_inspection).toLocaleDateString()}</p>` : ''}
+                    ${props.notes ? `<p class="text-sm text-gray-600 mt-2">${props.notes}</p>` : ''}
+                </div>
+            `;
+            
+            // Bind popup to both circle and marker
+            circle.bindPopup(popupContent);
+            marker.bindPopup(popupContent);
+            
+            // Add to layer
+            circle.addTo(dipTankLayer);
+            marker.addTo(dipTankLayer);
+        });
+    }
+
+    function addCordonLineLayer(geojsonData) {
+        // Create layer group for cordon lines
+        cordonLineLayer = L.layerGroup().addTo(map);
+        
+        // Process each cordon line feature in the GeoJSON
+        geojsonData.features.forEach(feature => {
+            const coords = feature.geometry.coordinates;
+            const props = feature.properties;
+            
+            // Determine line color based on status
+            let lineColor;
+            switch (props.status) {
+                case 'active':
+                    lineColor = '#2563eb';  // Blue
+                    break;
+                case 'temporary':
+                    lineColor = '#f59e0b';  // Amber
+                    break;
+                case 'inactive':
+                    lineColor = '#6b7280';  // Gray
+                    break;
+                default:
+                    lineColor = '#2563eb';
+            }
+            
+            // Convert coordinates to Leaflet format
+            const latLngs = coords.map(coord => [coord[1], coord[0]]);
+            
+            // Create polyline
+            const polyline = L.polyline(latLngs, {
+                color: lineColor,
+                weight: 4,
+                opacity: 0.8,
+                dashArray: props.status === 'temporary' ? '10, 5' : null
+            });
+            
+            // Create popup content for cordon line
+            const popupContent = `
+                <div class="p-2">
+                    <h3 class="font-bold text-lg mb-2">${props.name}</h3>
+                    <p class="text-sm mb-1"><strong>Status:</strong> ${props.status_display}</p>
+                    <p class="text-sm mb-1"><strong>Region:</strong> ${props.region_display}</p>
+                    <p class="text-sm mb-1"><strong>Established:</strong> ${new Date(props.date_established).toLocaleDateString()}</p>
+                    ${props.date_expires ? `<p class="text-sm mb-1"><strong>Expires:</strong> ${new Date(props.date_expires).toLocaleDateString()}</p>` : ''}
+                    ${props.description ? `<p class="text-sm text-gray-600 mt-2"><strong>Purpose:</strong> ${props.description}</p>` : ''}
+                    ${props.restrictions ? `<p class="text-sm text-red-600 mt-2"><strong>Restrictions:</strong> ${props.restrictions}</p>` : ''}
+                </div>
+            `;
+            
+            polyline.bindPopup(popupContent);
+            polyline.addTo(cordonLineLayer);
+        });
+    }
+    
+    function addFootWashStationLayer(geojsonData) {
+        // Create layer group for foot wash stations
+        footWashStationLayer = L.layerGroup().addTo(map);
+        
+        // Process each foot wash station feature in the GeoJSON
+        geojsonData.features.forEach(feature => {
+            const coords = feature.geometry.coordinates;
+            const props = feature.properties;
+            
+            // Determine marker color based on operational status
+            let markerColor = props.is_operational ? '#7c3aed' : '#6b7280';  // Purple or Gray
+            
+            // Create custom marker for foot wash station
+            const marker = L.circleMarker([coords[1], coords[0]], {
+                radius: 8,
+                fillColor: markerColor,
+                color: '#ffffff',
+                weight: 2,
+                opacity: 1,
+                fillOpacity: 0.9
+            });
+            
+            // Add a small icon overlay to distinguish from other markers
+            const iconMarker = L.marker([coords[1], coords[0]], {
+                icon: L.divIcon({
+                    html: '<div style="background-color: ' + markerColor + '; width: 16px; height: 16px; border-radius: 2px; border: 2px solid white; display: flex; align-items: center; justify-content: center; font-size: 10px; color: white; font-weight: bold;">W</div>',
+                    className: 'custom-div-icon',
+                    iconSize: [16, 16],
+                    iconAnchor: [8, 8]
+                })
+            });
+            
+            // Create detailed popup content with instructions
+            const popupContent = `
+                <div class="p-3 max-w-sm">
+                    <h3 class="font-bold text-lg mb-2 text-purple-800">${props.name}</h3>
+                    <div class="mb-3">
+                        <p class="text-sm mb-1"><strong>Location:</strong> ${props.road_name}</p>
+                        <p class="text-sm mb-1"><strong>Road Type:</strong> ${props.road_type_display}</p>
+                        <p class="text-sm mb-1"><strong>Region:</strong> ${props.region_display}</p>
+                        <p class="text-sm mb-1"><strong>Status:</strong> 
+                            <span class="${props.is_operational ? 'text-green-600' : 'text-red-600'}">${props.is_operational ? 'Operational' : 'Non-Operational'}</span>
+                        </p>
+                        <p class="text-sm mb-1"><strong>Hours:</strong> ${props.operating_hours}</p>
+                        ${props.contact_phone ? `<p class="text-sm mb-1"><strong>Contact:</strong> ${props.contact_phone}</p>` : ''}
+                    </div>
+                    
+                    <div class="border-t pt-3">
+                        <h4 class="font-semibold text-sm mb-2 text-purple-800">Instructions:</h4>
+                        <div class="text-xs text-gray-700 space-y-1">
+                            ${props.instructions.split('\n').map(line => `<p>• ${line.trim()}</p>`).join('')}
+                        </div>
+                    </div>
+                    
+                    ${props.contact_person ? `
+                    <div class="border-t pt-2 mt-2">
+                        <p class="text-xs text-gray-600"><strong>Station Manager:</strong> ${props.contact_person}</p>
+                    </div>
+                    ` : ''}
+                </div>
+            `;
+            
+            // Bind popup to both markers
+            marker.bindPopup(popupContent);
+            iconMarker.bindPopup(popupContent);
+            
+            // Add to layer
+            marker.addTo(footWashStationLayer);
+            iconMarker.addTo(footWashStationLayer);
+        });
+    }
+
+    // Initialize map on page load
+    document.addEventListener('DOMContentLoaded', () => {
+        loadOutbreakMap();
+    });
+</script>
+{% endblock %}

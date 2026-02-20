@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block title %}Updates & News - FMD Watch Eswatini{% endblock %}
+
+{% block content %}
+<div class="bg-gray-100 py-8">
+    <div class="container mx-auto px-4">
+        <h1 class="text-4xl font-bold text-gray-800">Updates & News</h1>
+        <p class="text-gray-600 mt-2">Latest information about FMD control and management</p>
+    </div>
+</div>
+
+<div class="container mx-auto px-4 py-12">
+    {% if updates %}
+    <div class="max-w-4xl mx-auto space-y-6">
+        {% for update in updates %}
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition">
+            <div class="md:flex">
+                {% if update.image %}
+                <div class="md:w-1/3">
+                    <img src="{{ update.image.url }}" alt="{{ update.title }}" class="w-full h-full object-cover">
+                </div>
+                {% endif %}
+                
+                <div class="p-6 {% if update.image %}md:w-2/3{% else %}w-full{% endif %}">
+                    <!-- Update Type Badge -->
+                    <div class="flex items-center flex-wrap gap-2 mb-3">
+                        <span class="
+                            px-3 py-1 rounded-full text-xs font-semibold
+                            {% if update.update_type == 'alert' %}bg-red-100 text-red-700
+                            {% elif update.update_type == 'announcement' %}bg-blue-100 text-blue-700
+                            {% elif update.update_type == 'guideline' %}bg-emerald-100 text-emerald-700
+                            {% else %}bg-gray-100 text-gray-700{% endif %}
+                        ">
+                            {{ update.get_update_type_display }}
+                        </span>
+                        
+                        {% if update.is_featured %}
+                        <span class="px-3 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-700">
+                            Featured
+                        </span>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Title -->
+                    <h2 class="text-2xl font-bold text-gray-800 mb-3">{{ update.title }}</h2>
+                    
+                    <!-- Meta Information -->
+                    <div class="flex items-center text-sm text-gray-600 mb-4">
+                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                        <span class="mr-4">{{ update.published_at|date:"F d, Y" }}</span>
+                        
+                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                        </svg>
+                        <span>{{ update.source }}</span>
+                    </div>
+                    
+                    <!-- Content Preview -->
+                    <div class="text-gray-700 mb-4">
+                        <p>{{ update.content|truncatewords:50 }}</p>
+                    </div>
+                    
+                    <!-- Related Outbreak -->
+                    {% if update.related_outbreak %}
+                    <div class="bg-gray-50 rounded-lg p-3 mb-4">
+                        <p class="text-sm text-gray-600">
+                            <strong>Related Outbreak:</strong> {{ update.related_outbreak.title }}
+                        </p>
+                    </div>
+                    {% endif %}
+                    
+                    <!-- Document Attachment -->
+                    {% if update.document %}
+                    <div class="mt-4">
+                        <a href="{{ update.document.url }}" 
+                           class="inline-flex items-center text-emerald-600 hover:text-emerald-700 font-medium"
+                           download>
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            Download Attachment
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="max-w-2xl mx-auto text-center py-12">
+        <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+        </svg>
+        <h2 class="text-2xl font-bold text-gray-800 mb-2">No Updates Available</h2>
+        <p class="text-gray-600">Check back later for the latest news and announcements.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

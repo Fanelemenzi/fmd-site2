@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+
+{% block title %}About FMD - FMD Watch Eswatini{% endblock %}
+
+{% block content %}
+<div class="bg-gray-100 py-8">
+    <div class="container mx-auto px-4">
+        <h1 class="text-4xl font-bold text-gray-800">About Foot and Mouth Disease</h1>
+        <p class="text-gray-600 mt-2">Understanding FMD and its impact on livestock</p>
+    </div>
+</div>
+
+<div class="container mx-auto px-4 py-12">
+    <div class="max-w-4xl mx-auto">
+        <!-- What is FMD -->
+        <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">What is Foot and Mouth Disease?</h2>
+            <p class="text-gray-700 mb-4">
+                Foot and Mouth Disease (FMD) is a highly contagious viral disease that affects cloven-hoofed animals, 
+                including cattle, pigs, sheep, goats, and other wildlife. It is characterized by fever and blister-like 
+                lesions on the tongue, mouth, feet, and teats.
+            </p>
+            <p class="text-gray-700 mb-4">
+                While FMD rarely affects humans, it has severe economic consequences for the livestock industry. 
+                The disease spreads rapidly and can devastate animal populations if not properly controlled.
+            </p>
+        </div>
+
+        <!-- Symptoms -->
+        <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Signs and Symptoms</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="border-l-4 border-emerald-500 pl-4">
+                    <h3 class="font-bold text-lg mb-2">In Cattle</h3>
+                    <ul class="list-disc list-inside text-gray-700 space-y-1">
+                        <li>Fever (up to 41°C)</li>
+                        <li>Blisters on tongue and mouth</li>
+                        <li>Excessive drooling</li>
+                        <li>Lameness</li>
+                        <li>Reduced milk production</li>
+                        <li>Weight loss</li>
+                    </ul>
+                </div>
+                
+                <div class="border-l-4 border-emerald-500 pl-4">
+                    <h3 class="font-bold text-lg mb-2">In Pigs</h3>
+                    <ul class="list-disc list-inside text-gray-700 space-y-1">
+                        <li>High fever</li>
+                        <li>Blisters on snout and feet</li>
+                        <li>Sudden lameness</li>
+                        <li>Loss of appetite</li>
+                        <li>Reluctance to move</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Transmission -->
+        <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">How FMD Spreads</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                        <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="font-bold mb-2">Direct Contact</h3>
+                    <p class="text-sm text-gray-600">Between infected and healthy animals</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                        <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="font-bold mb-2">Airborne</h3>
+                    <p class="text-sm text-gray-600">Wind can carry the virus over long distances</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                        <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path>
+                        </svg>
+                    </div>
+                    <h3 class="font-bold mb-2">Contaminated Items</h3>
+                    <p class="text-sm text-gray-600">Feed, equipment, vehicles, and clothing</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Economic Impact -->
+        <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Economic Impact</h2>
+            <p class="text-gray-700 mb-4">
+                FMD has significant economic consequences for Eswatini:
+            </p>
+            <ul class="list-disc list-inside text-gray-700 space-y-2">
+                <li>Loss of international trade opportunities due to export bans</li>
+                <li>Reduced livestock productivity (milk, meat, draft power)</li>
+                <li>High costs of outbreak control and vaccination programs</li>
+                <li>Movement restrictions affecting farmers and markets</li>
+                <li>Loss of genetic resources from high-value breeding stock</li>
+            </ul>
+        </div>
+
+        <!-- Prevention -->
+        <div class="bg-emerald-50 rounded-lg border-2 border-emerald-500 p-8">
+            <h2 class="text-2xl font-bold text-emerald-800 mb-4">Prevention is Key</h2>
+            <p class="text-gray-700 mb-4">
+                Early detection and rapid response are crucial to controlling FMD outbreaks. 
+                If you suspect an outbreak:
+            </p>
+            <div class="bg-white rounded-lg p-6">
+                <h3 class="font-bold text-lg mb-3">Immediate Actions:</h3>
+                <ol class="list-decimal list-inside text-gray-700 space-y-2">
+                    <li>Isolate affected animals immediately</li>
+                    <li>Contact Veterinary Services: <strong>+268 2404 2731</strong></li>
+                    <li>Restrict all animal movements on and off your farm</li>
+                    <li>Implement strict biosecurity measures</li>
+                    <li>Keep detailed records of animal movements</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}FMD Watch - Eswatini{% endblock %}</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <!-- Leaflet CSS and JS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" 
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" 
+          crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" 
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" 
+            crossorigin=""></script>
+    
+    <style>
+        /* Custom styles */
+        .map-container {
+            height: 500px;
+        }
+        
+        .status-active {
+            background-color: #ef4444;
+        }
+        
+        .status-surveillance {
+            background-color: #f59e0b;
+        }
+        
+        .status-cleared {
+            background-color: #10b981;
+        }
+    </style>
+    
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-emerald-700 text-white shadow-lg">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between py-4">
+                <div class="flex items-center space-x-3">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path>
+                    </svg>
+                    <div>
+                        <h1 class="text-xl font-bold">FMD Watch</h1>
+                        <p class="text-xs text-emerald-100">Eswatini Disease Monitoring</p>
+                    </div>
+                </div>
+                
+                <!-- Mobile menu button -->
+                <button 
+                    @click="mobileMenuOpen = !mobileMenuOpen" 
+                    class="md:hidden focus:outline-none"
+                    x-data="{ mobileMenuOpen: false }">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+                
+                <!-- Desktop menu -->
+                <div class="hidden md:flex space-x-6">
+                    <a href="{% url 'home' %}" class="hover:text-emerald-200 transition">Home</a>
+                    <a href="{% url 'about' %}" class="hover:text-emerald-200 transition">About FMD</a>
+                    <a href="{% url 'updates' %}" class="hover:text-emerald-200 transition">Updates</a>
+                    <a href="{% url 'control_measures' %}" class="hover:text-emerald-200 transition">Control Measures</a>
+                    <a href="{% url 'contact' %}" class="hover:text-emerald-200 transition">Contact</a>
+                </div>
+            </div>
+            
+            <!-- Mobile menu -->
+            <div x-data="{ mobileMenuOpen: false }" x-show="mobileMenuOpen" class="md:hidden pb-4">
+                <a href="{% url 'home' %}" class="block py-2 hover:text-emerald-200">Home</a>
+                <a href="{% url 'about' %}" class="block py-2 hover:text-emerald-200">About FMD</a>
+                <a href="{% url 'updates' %}" class="block py-2 hover:text-emerald-200">Updates</a>
+                <a href="{% url 'control_measures' %}" class="block py-2 hover:text-emerald-200">Control Measures</a>
+                <a href="{% url 'contact' %}" class="block py-2 hover:text-emerald-200">Contact</a>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white mt-16">
+        <div class="container mx-auto px-4 py-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="font-bold text-lg mb-3">FMD Watch Eswatini</h3>
+                    <p class="text-gray-300 text-sm">
+                        Real-time monitoring and information about Foot and Mouth Disease outbreaks in Eswatini.
+                    </p>
+                </div>
+                
+                <div>
+                    <h3 class="font-bold text-lg mb-3">Quick Links</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="{% url 'about' %}" class="text-gray-300 hover:text-white">About FMD</a></li>
+                        <li><a href="{% url 'updates' %}" class="text-gray-300 hover:text-white">Latest Updates</a></li>
+                        <li><a href="{% url 'control_measures' %}" class="text-gray-300 hover:text-white">Prevention & Control</a></li>
+                        <li><a href="{% url 'contact' %}" class="text-gray-300 hover:text-white">Contact Us</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="font-bold text-lg mb-3">Emergency Contacts</h3>
+                    <ul class="text-gray-300 text-sm space-y-2">
+                        <li>Veterinary Services: +268 2404 2731</li>
+                        <li>Emergency Hotline: +268 7600 0000</li>
+                        <li>Email: vet@gov.sz</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-8 pt-6 text-center text-sm text-gray-400">
+                <p>&copy; 2024 Ministry of Agriculture, Eswatini. All rights reserved.</p>
+                <p class="mt-2">Data updated regularly. For official inquiries, contact veterinary services.</p>
+            </div>
+        </div>
+    </footer>
+    
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>
