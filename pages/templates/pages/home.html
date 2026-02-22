@@ -161,19 +161,7 @@
                 </div>
             </div>
 
-            <!-- Drawing Tools -->
-            <div class="mt-4 pt-4 border-t">
-                <div class="flex flex-wrap gap-4 items-center">
-                    <h4 class="text-sm font-semibold text-gray-800">Drawing Tools:</h4>
-                    <button id="draw-cordon-line" class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 transition">
-                        Draw Cordon Line
-                    </button>
-                    <button id="clear-drawing" class="bg-gray-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-gray-700 transition">
-                        Clear Drawing
-                    </button>
-                    <span id="drawing-status" class="text-sm text-gray-600"></span>
-                </div>
-            </div>
+
         </div>
 
         <!-- Map Container -->
@@ -310,9 +298,6 @@
     let dipTankLayer;
     let cordonLineLayer;
     let footWashStationLayer;
-    let drawingLayer;
-    let isDrawing = false;
-    let currentDrawnLine = [];
 
     function loadOutbreakMap(statusFilter = 'all', regionFilter = 'all', showDipTanks = 'all', showCordonLines = 'all', showFootWashStations = 'all') {
         // Build API URLs with filters
@@ -362,12 +347,6 @@
                         maxZoom: 18
                     }).addTo(map);
 
-                    // Initialize drawing layer
-                    drawingLayer = L.layerGroup().addTo(map);
-
-                    // Set up drawing controls
-                    setupDrawingControls();
-
                     addOutbreakLayer(outbreakData);
                     addDipTankLayer(dipTankData);
                     addCordonLineLayer(cordonLineData);
@@ -393,109 +372,7 @@
         if (footWashStationLayer) map.removeLayer(footWashStationLayer);
     }
 
-    function setupDrawingControls() {
-        const drawButton = document.getElementById('draw-cordon-line');
-        const clearButton = document.getElementById('clear-drawing');
-        const statusSpan = document.getElementById('drawing-status');
 
-        drawButton.addEventListener('click', () => {
-            if (!isDrawing) {
-                startDrawing();
-                drawButton.textContent = 'Finish Drawing';
-                drawButton.classList.remove('bg-blue-600', 'hover:bg-blue-700');
-                drawButton.classList.add('bg-green-600', 'hover:bg-green-700');
-                statusSpan.textContent = 'Click on map to draw cordon line points. Click "Finish Drawing" when done.';
-            } else {
-                finishDrawing();
-                drawButton.textContent = 'Draw Cordon Line';
-                drawButton.classList.remove('bg-green-600', 'hover:bg-green-700');
-                drawButton.classList.add('bg-blue-600', 'hover:bg-blue-700');
-                statusSpan.textContent = '';
-            }
-        });
-
-        clearButton.addEventListener('click', () => {
-            clearDrawing();
-            statusSpan.textContent = 'Drawing cleared.';
-            setTimeout(() => statusSpan.textContent = '', 3000);
-        });
-    }
-
-    function startDrawing() {
-        isDrawing = true;
-        currentDrawnLine = [];
-        map.getContainer().style.cursor = 'crosshair';
-        
-        map.on('click', onMapClick);
-    }
-
-    function finishDrawing() {
-        isDrawing = false;
-        map.getContainer().style.cursor = '';
-        map.off('click', onMapClick);
-        
-        if (currentDrawnLine.length > 1) {
-            // Show save dialog or automatically save
-            const name = prompt('Enter a name for this cordon line:');
-            if (name) {
-                saveCordonLine(name, currentDrawnLine);
-            }
-        }
-    }
-
-    function onMapClick(e) {
-        if (!isDrawing) return;
-        
-        const point = {lat: e.latlng.lat, lng: e.latlng.lng};
-        currentDrawnLine.push(point);
-        
-        // Add visual feedback
-        L.circleMarker([point.lat, point.lng], {
-            radius: 4,
-            fillColor: '#3b82f6',
-            color: '#ffffff',
-            weight: 2,
-            opacity: 1,
-            fillOpacity: 1
-        }).addTo(drawingLayer);
-        
-        // Draw line segments
-        if (currentDrawnLine.length > 1) {
-            const lastTwo = currentDrawnLine.slice(-2);
-            L.polyline([[lastTwo[0].lat, lastTwo[0].lng], [lastTwo[1].lat, lastTwo[1].lng]], {
-                color: '#3b82f6',
-                weight: 3,
-                opacity: 0.8
-            }).addTo(drawingLayer);
-        }
-    }
-
-    function clearDrawing() {
-        drawingLayer.clearLayers();
-        currentDrawnLine = [];
-        if (isDrawing) {
-            isDrawing = false;
-            map.getContainer().style.cursor = '';
-            map.off('click', onMapClick);
-            document.getElementById('draw-cordon-line').textContent = 'Draw Cordon Line';
-            document.getElementById('draw-cordon-line').classList.remove('bg-green-600', 'hover:bg-green-700');
-            document.getElementById('draw-cordon-line').classList.add('bg-blue-600', 'hover:bg-blue-700');
-        }
-    }
-
-    function saveCordonLine(name, coordinates) {
-        // In a real implementation, you would send this to your backend
-        console.log('Saving cordon line:', {
-            name: name,
-            coordinates: coordinates
-        });
-        
-        // For now, just show an alert
-        alert(`Cordon line "${name}" would be saved with ${coordinates.length} points. In a full implementation, this would be sent to the server.`);
-        
-        // Clear the drawing
-        clearDrawing();
-    }
 
     function addOutbreakLayer(geojsonData) {
         // Create layer group for outbreaks
