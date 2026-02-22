@@ -11,19 +11,30 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+import dj_database_url
+
+from environ import Env
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+env = Env()
+Env.read_env(BASE_DIR / '.env')  # Reads the .env file from project root
+
+ENVIRONMENT = env("ENVIRONMENT", default="development")  # 'development' or 'production'
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-uhdl^8k4bi=tc)&5-iswx@r*&tz26b9zp%!^crab1mekp8u)ev"
+SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+if ENVIRONMENT == "production":
+    DEBUG = True
+else:
+    DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -86,16 +97,11 @@ DATABASES = {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
     }
-    # For production with PostgreSQL + PostGIS:
-    # 'default': {
-    #     'ENGINE': 'django.contrib.gis.db.backends.postgis',
-    #     'NAME': 'fmd_eswatini',
-    #     'USER': 'your_db_user',
-    #     'PASSWORD': 'your_db_password',
-    #     'HOST': 'localhost',
-    #     'PORT': '5432',
-    # }
 }
+
+POSTGRES_LOCALLY = False
+if ENVIRONMENT == "production" or POSTGRES_LOCALLY == True:
+    DATABASES['default'] = dj_database_url.parse(env('DATABASE_URL', default='sqlite:///db.sqlite3'))
 
 
 # Password validation
